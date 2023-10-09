@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
                     Elements ovr = document.select(" li.versions-list-el");
                     Elements s_name = document.select("div.content-container");
                     Elements f_name = document.select("h2.subtle-text");
+                    Elements player_skill = document.select(" div.cards-container.flex.flex-expand");
 
                     buffer.append((f_name.text()).replace("eFootball 2022 Stats", "") + ", ");
                     buffer.append(offensive_awareness.text() + ", ");
@@ -239,6 +240,10 @@ public class MainActivity extends AppCompatActivity {
                     buffer.append(gk.get(3).child(0).child(1).text() + ", ");
 
                     buffer.append(playing_style.get(0).child(0).child(1).text() + ", ");
+                int size = player_skill.get(0).child(1).child(1).children().size();
+                for (int i = 0; i < size ;i++){
+                    buffer.append(player_skill.get(0).child(1).child(1).child(i).text() + ", ");
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
