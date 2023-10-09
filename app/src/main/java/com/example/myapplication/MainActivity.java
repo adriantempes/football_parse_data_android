@@ -217,6 +217,12 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         }
                     }
+                for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
+                    if (middle.get(0).child(i).child(0).text().equals("Condition")) {
+                        buffer.append(middle.get(0).child(i).child(1).text() + ", ");
+                        break;
+                    }
+                }
                     buffer.append(ovr.get(0).child(0).text() + ", ");
                     buffer.append(s_name.get(0).child(0).child(0).child(0).child(0).child(4).text() + ", ");
                     for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
