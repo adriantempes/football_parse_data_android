@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 //
              ArrayList<String> invoke = null;
              try {
-                 invoke = new Read().execute("https://www.pesmaster.com/stade-rennais-fc/efootball-2022/team/218/").get();
+                 invoke = new Read().execute("https://www.pesmaster.com/serie-bkt/efootball-2022/league/346/").get();
              } catch (ExecutionException e) {
                  throw new RuntimeException(e);
              } catch (InterruptedException e) {
@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         public  void writefile(String text)
         {
             File externalStorageDir =  new File (Environment.getExternalStorageDirectory().getAbsolutePath()  + "/Download/eyedebug/" );
-            String fileName=  System.currentTimeMillis() + ".txt" ;
+            String fileName =  System.currentTimeMillis() + ".txt" ;
 
             boolean statement = externalStorageDir.exists() && externalStorageDir.isDirectory();
             if(!statement) {
@@ -311,6 +311,16 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> list = new ArrayList<>();
         String data;
         String dataInvoke;
+        Elements player;
+        Document teamdata;
+        Elements sizeteam;
+        int gk;
+        int cb;
+        int mf;
+        int cf;
+        int size;
+        Elements team;
+        String datateam;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -319,22 +329,31 @@ public class MainActivity extends AppCompatActivity {
         protected ArrayList<String> doInBackground(String... params) {
 
             try {
-                Document document1 = Jsoup.connect("https://www.pesmaster.com/stade-rennais-fc/efootball-2022/team/218/").get();
-                Elements hehe = document1.select("div.main-container" );
-                int gk = hehe.get(0).child(7).child(0).child(0).childNodeSize() - 2;
-                int cb = hehe.get(0).child(9).child(0).child(0).childNodeSize() - 2;
-                int mf = hehe.get(0).child(11).child(0).child(0).childNodeSize() - 2;
-                int cf = hehe.get(0).child(13).child(0).child(0).childNodeSize() - 2;
-                int size = gk + cb + mf + cf;
-                Elements name = document1.select("figure.player-card.efootball-2022 > a");
-
-                for (int i = 0; i < size; i++) {
-                    data = name.get(i).attr("href");
-                    list.add(
-                            "https://www.pesmaster.com" + data
-                    );
-                    dataInvoke = "https://www.pesmaster.com" + data;
+                Document league = Jsoup.connect("https://www.pesmaster.com/serie-bkt/efootball-2022/league/346/").get();
+//                Document document1 = Jsoup.connect("https://www.pesmaster.com/stade-rennais-fc/efootball-2022/team/218/").get();
+                for (int i = 0 ; i < 20 ; i ++){
+//                    for (int i = 0 ; i < 18 ; i ++){
+                     team = league.select("div.team-block > a");
+                     datateam = team.get(i).attr("href");
+                    teamdata = Jsoup.connect("https://www.pesmaster.com" + datateam).get();
+                    sizeteam = teamdata.select("div.main-container" );
+                     gk = sizeteam.get(0).child(7).child(0).child(0).childNodeSize() - 2;
+                     cb = sizeteam.get(0).child(9).child(0).child(0).childNodeSize() - 2;
+                     mf = sizeteam.get(0).child(11).child(0).child(0).childNodeSize() - 2;
+                     cf = sizeteam.get(0).child(13).child(0).child(0).childNodeSize() - 2;
+                     size = gk + cb + mf + cf;
+                    player = teamdata.select("figure.player-card.efootball-2022 > a");
+                    for (int j = 0; j < size; j++) {
+//                        for (int j = 0; j < size; j++) {
+                        data = player.get(j).attr("href");
+                        list.add(
+                                "https://www.pesmaster.com" + data
+                        );
+                        dataInvoke = "https://www.pesmaster.com" + data;
+                    }
                 }
+
+
                 }
                 catch (IOException e) {
                 e.printStackTrace();
