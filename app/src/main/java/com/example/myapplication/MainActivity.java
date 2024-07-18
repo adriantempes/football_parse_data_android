@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedWriter;
@@ -18,9 +19,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
+ int id = 1;
+ int teamid = 1;
 
     private EditText resultText;
     int currentFile = 0;
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 //
              ArrayList<String> invoke = null;
              try {
-                 invoke = new Read().execute("https://www.pesmaster.com/serie-bkt/efootball-2022/league/346/").get();
+                 invoke = new Read().execute("https://www.pesmaster.com/english-league/efootball-2022/league/113/").get();
              } catch (ExecutionException e) {
                  throw new RuntimeException(e);
              } catch (InterruptedException e) {
@@ -50,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
                 for (int i = 0; i < invoke.size(); i++) {
                     new PareseURL().execute(new String[]{invoke.get(i), "" + i});
-
             }
+//              new PareseURL().execute("https://www.pesmaster.com/edir-reymond/efootball-2022/player/8540403/");
+
+//
         });
 
     }
@@ -68,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+
             StringBuffer buffer = new StringBuffer();
 //            buttonGetData.setOnClickListener(v -> {
 //                String joined  = TextUtils.join(", ", paths);
@@ -92,164 +100,208 @@ public class MainActivity extends AppCompatActivity {
 //                        buffer.append(data + "\n");
 //                    }
 //                }
+                String posion = null;
+                String ovr_position = null;
 
-////       ability
-                    Elements offensive_awareness = document.select("span.offensive_awareness");
-                    Elements finishing = document.select("span.finishing");
-                    Elements kicking_power = document.select("span.kicking_power");
-                    Elements ball_control = document.select("span.ball_control");
-                    Elements dribbling = document.select("span.dribbling");
-                    Elements tight_possession = document.select("span.tight_possession");
-                    Elements balance = document.select("span.balance");
-                    Elements heading = document.select("span.heading");
-                    Elements jumping = document.select("span.jumping");
-                    Elements defensive_awareness = document.select("span.defensive_awareness");
-                    Elements tackling = document.select("span.tackling");
-                    Elements defensive_engagement = document.select("span.defensive_engagement");
-                    Elements aggression = document.select("span.aggression");
-                    Elements low_pass = document.select("span.low_pass");
-                    Elements lofted_pass = document.select("span.lofted_pass");
-                    Elements set_piece_taking = document.select("span.set_piece_taking");
-                    Elements curl = document.select("span.curl");
-                    Elements speed = document.select("span.speed");
-                    Elements acceleration = document.select("span.acceleration");
-                    Elements physical_contact = document.select("span.physical_contact");
-                    Elements stamina = document.select("span.stamina");
-                    Elements gk_awareness = document.select("span.gk_awareness");
-                    Elements gk_catching = document.select("span.gk_catching");
-                    Elements gk_parrying = document.select("span.gk_parrying");
-                    Elements gk_reflexes = document.select("span.gk_reflexes");
-                    Elements gk_reach = document.select("span.gk_reach");
-                    Elements tactic_possession_game = document.select("span.tactic_possession_game");
-                    Elements tactic_quick_counter = document.select("span.tactic_quick_counter");
-                    Elements tactic_long_ball_counter = document.select("span.tactic_long_ball_counter");
-                    Elements tactic_out_wide = document.select("span.tactic_out_wide");
-                    Elements tactic_long_ball = document.select("span.tactic_long_ball");
 
-                    Elements player_info = document.select("   table.player-info > tbody");
+                Elements offensive_awareness = document.select("span.offensive_awareness");
+                Elements finishing = document.select("span.finishing");
+                Elements kicking_power = document.select("span.kicking_power");
+                Elements ball_control = document.select("span.ball_control");
+                Elements dribbling = document.select("span.dribbling");
+                Elements tight_possession = document.select("span.tight_possession");
+                Elements balance = document.select("span.balance");
+                Elements heading = document.select("span.heading");
+                Elements jumping = document.select("span.jumping");
+                Elements defensive_awareness = document.select("span.defensive_awareness");
+                Elements tackling = document.select("span.tackling");
+                Elements defensive_engagement = document.select("span.defensive_engagement");
+                Elements aggression = document.select("span.aggression");
+                Elements low_pass = document.select("span.low_pass");
+                Elements lofted_pass = document.select("span.lofted_pass");
+                Elements set_piece_taking = document.select("span.set_piece_taking");
+                Elements curl = document.select("span.curl");
+                Elements speed = document.select("span.speed");
+                Elements acceleration = document.select("span.acceleration");
+                Elements physical_contact = document.select("span.physical_contact");
+                Elements stamina = document.select("span.stamina");
+                Elements gk_awareness = document.select("span.gk_awareness");
+                Elements gk_catching = document.select("span.gk_catching");
+                Elements gk_parrying = document.select("span.gk_parrying");
+                Elements gk_reflexes = document.select("span.gk_reflexes");
+                Elements gk_reach = document.select("span.gk_reach");
+                Elements tactic_possession_game = document.select("span.tactic_possession_game");
+                Elements tactic_quick_counter = document.select("span.tactic_quick_counter");
+                Elements tactic_long_ball_counter = document.select("span.tactic_long_ball_counter");
+                Elements tactic_out_wide = document.select("span.tactic_out_wide");
+                Elements tactic_long_ball = document.select("span.tactic_long_ball");
+
+                Elements player_info = document.select("   table.player-info > tbody");
 
 //  13 position
-                    Elements gk = document.select(" div.player-positions-row");
-                    Elements lb = document.select(" div.player-positions-row");
-                    Elements cb = document.select(" div.player-positions-row");
-                    Elements rb = document.select(" div.player-positions-row");
-                    Elements lmf = document.select(" div.player-positions-row");
-                    Elements dmf = document.select(" div.player-positions-row");
-                    Elements cmf = document.select(" div.player-positions-row");
-                    Elements amf = document.select(" div.player-positions-row");
-                    Elements rmf = document.select("div.player-positions-row");
-                    Elements lwf = document.select(" div.player-positions-row");
-                    Elements ss = document.select(" div.player-positions-row");
-                    Elements cf = document.select(" div.player-positions-row");
-                    Elements rwf = document.select(" div.player-positions-row");
+                Elements gk = document.select(" div.player-positions-row");
+                Elements lb = document.select(" div.player-positions-row");
+                Elements cb = document.select(" div.player-positions-row");
+                Elements rb = document.select(" div.player-positions-row");
+                Elements lmf = document.select(" div.player-positions-row");
+                Elements dmf = document.select(" div.player-positions-row");
+                Elements cmf = document.select(" div.player-positions-row");
+                Elements amf = document.select(" div.player-positions-row");
+                Elements rmf = document.select("div.player-positions-row");
+                Elements lwf = document.select(" div.player-positions-row");
+                Elements ss = document.select(" div.player-positions-row");
+                Elements cf = document.select(" div.player-positions-row");
+                Elements rwf = document.select(" div.player-positions-row");
 
 //playing style
-                    Elements playing_style = document.select(" div.cards-container.flex.flex-expand");
-                    Elements middle = document.select("div.player-main-column.player-info-column > table.player-info > tbody ");
-                    Elements ovr = document.select(" li.versions-list-el");
-                    Elements s_name = document.select("div.content-container");
-                    Elements f_name = document.select("h2.subtle-text");
-                    Elements player_skill = document.select(" div.cards-container.flex.flex-expand");
+                Elements playing_style = document.select(" div.cards-container.flex.flex-expand");
+                Elements middle = document.select("div.player-main-column.player-info-column > table.player-info > tbody ");
+                Elements ovr = document.select(" li.versions-list-el");
+                Elements s_name = document.select("div.content-container");
+                Elements f_name = document.select("h2.subtle-text");
+                Elements player_skill = document.select(" div.cards-container.flex.flex-expand");
 
-                    buffer.append((f_name.text()).replace("eFootball 2022 Stats", "") + ", ");
-                    buffer.append(offensive_awareness.text() + ", ");
-                    buffer.append(finishing.text() + ", ");
-                    buffer.append(kicking_power.text() + ", ");
-                    buffer.append(ball_control.text() + ", ");
-                    buffer.append(dribbling.text() + ", ");
-                    buffer.append(tight_possession.text() + ", ");
-                    buffer.append(balance.text() + ", ");
-                    buffer.append(heading.text() + ", ");
-                    buffer.append(jumping.text() + ", ");
-                    buffer.append(defensive_awareness.text() + ", ");
-                    buffer.append(tackling.text() + ", ");
-                    buffer.append(defensive_engagement.text() + ", ");
-                    buffer.append(aggression.text() + ", ");
-                    buffer.append(low_pass.text() + ", ");
-                    buffer.append(lofted_pass.text() + ", ");
-                    buffer.append(set_piece_taking.text() + ", ");
-                    buffer.append(curl.text() + ", ");
-                    buffer.append(speed.text() + ", ");
-                    buffer.append(acceleration.text() + ", ");
-                    buffer.append(physical_contact.text() + ", ");
-                    buffer.append(stamina.text() + ", ");
-                    buffer.append(gk_awareness.text() + ", ");
-                    buffer.append(gk_catching.text() + ", ");
-                    buffer.append(gk_parrying.text() + ", ");
-                    buffer.append(gk_reflexes.text() + ", ");
-                    buffer.append(gk_reach.text() + ", ");
-                    buffer.append(tactic_possession_game.text() + ", ");
-                    buffer.append(tactic_quick_counter.text() + ", ");
-                    buffer.append(tactic_long_ball_counter.text() + ", ");
-                    buffer.append(tactic_out_wide.text() + ", ");
-                    buffer.append(tactic_long_ball.text() + ", ");
-                    buffer.append(player_info.get(1).child(0).child(1).text() + ", ");
-                    buffer.append(player_info.get(1).child(1).child(1).text() + ", ");
-                    buffer.append(player_info.get(1).child(2).child(1).text() + ", ");
-                    buffer.append(player_info.get(1).child(3).child(1).text() + ", ");
-                    for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
-                        if (middle.get(0).child(i).child(0).text().equals("Nationality")) {
-                            buffer.append(middle.get(0).child(i).child(1).text() + ", ");
-                            break;
-                        }
+
+                buffer.append((f_name.text()).replace("eFootball 2022 Stats", "") + ", ");
+                buffer.append(offensive_awareness.text() + ", ");
+                buffer.append(finishing.text() + ", ");
+                buffer.append(kicking_power.text() + ", ");
+                buffer.append(ball_control.text() + ", ");
+                buffer.append(dribbling.text() + ", ");
+                buffer.append(tight_possession.text() + ", ");
+                buffer.append(balance.text() + ", ");
+                buffer.append(heading.text() + ", ");
+                buffer.append(jumping.text() + ", ");
+                buffer.append(defensive_awareness.text() + ", ");
+                buffer.append(tackling.text() + ", ");
+                buffer.append(defensive_engagement.text() + ", ");
+                buffer.append(aggression.text() + ", ");
+                buffer.append(low_pass.text() + ", ");
+                buffer.append(lofted_pass.text() + ", ");
+                buffer.append(set_piece_taking.text() + ", ");
+                buffer.append(curl.text() + ", ");
+                buffer.append(speed.text() + ", ");
+                buffer.append(acceleration.text() + ", ");
+                buffer.append(physical_contact.text() + ", ");
+                buffer.append(stamina.text() + ", ");
+                buffer.append(gk_awareness.text() + ", ");
+                buffer.append(gk_catching.text() + ", ");
+                buffer.append(gk_parrying.text() + ", ");
+                buffer.append(gk_reflexes.text() + ", ");
+                buffer.append(gk_reach.text() + ", ");
+//                buffer.append(tactic_possession_game.text() + ", ");
+//                buffer.append(tactic_quick_counter.text() + ", ");
+//                buffer.append(tactic_long_ball_counter.text() + ", ");
+//                buffer.append(tactic_out_wide.text() + ", ");
+//                buffer.append(tactic_long_ball.text() + ", ");
+                buffer.append(player_info.get(1).child(0).child(1).text() + ", ");
+                buffer.append(player_info.get(1).child(1).child(1).text() + ", ");
+                buffer.append(player_info.get(1).child(2).child(1).text() + ", ");
+                buffer.append(player_info.get(1).child(3).child(1).text() + ", ");
+                for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
+                    if (middle.get(0).child(i).child(0).text().equals("Nationality")) {
+                        buffer.append(middle.get(0).child(i).child(1).text() + ", ");
+                        break;
                     }
-                    for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
-                        if (middle.get(0).child(i).child(0).text().equals("Age")) {
-                            buffer.append(middle.get(0).child(i).child(1).text() + ", ");
-                            break;
-                        }
+                }
+                for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
+                    if (middle.get(0).child(i).child(0).text().equals("Age")) {
+                        buffer.append(middle.get(0).child(i).child(1).text() + ", ");
+                        break;
                     }
-                    for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
-                        if (middle.get(0).child(i).child(0).text().equals("Stronger Foot")) {
-                            buffer.append(middle.get(0).child(i).child(1).text() + ", ");
-                            break;
-                        }
+                }
+                for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
+                    if (middle.get(0).child(i).child(0).text().equals("Stronger Foot")) {
+                        buffer.append(middle.get(0).child(i).child(1).text() + ", ");
+                        break;
                     }
-                    for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
-                        if (middle.get(0).child(i).child(0).text().equals("Height (cm)")) {
-                            buffer.append(middle.get(0).child(i).child(1).text() + ", ");
-                            break;
-                        }
+                }
+                for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
+                    if (middle.get(0).child(i).child(0).text().equals("Height (cm)")) {
+                        buffer.append(middle.get(0).child(i).child(1).text() + ", ");
+                        break;
                     }
-                    for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
-                        if (middle.get(0).child(i).child(0).text().equals("Weight")) {
-                            buffer.append(middle.get(0).child(i).child(1).text() + ", ");
-                            break;
-                        }
+                }
+                for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
+                    if (middle.get(0).child(i).child(0).text().equals("Weight")) {
+                        buffer.append(middle.get(0).child(i).child(1).text() + ", ");
+                        break;
                     }
+                }
                 for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
                     if (middle.get(0).child(i).child(0).text().equals("Condition")) {
                         buffer.append(middle.get(0).child(i).child(1).text() + ", ");
                         break;
                     }
                 }
-                    buffer.append(ovr.get(0).child(0).text() + ", ");
-                    buffer.append(s_name.get(0).child(0).child(0).child(0).child(0).child(4).text() + ", ");
-                    for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
-                        if (middle.get(0).child(i).child(0).text().equals("Position")) {
-                            buffer.append(middle.get(0).child(i).child(1).child(0).text() + ", ");
-                            break;
-                        }
+//                buffer.append(ovr.get(0).child(0).text() + ", ");
+                buffer.append(s_name.get(0).child(0).child(0).child(0).child(0).child(4).text() + ", ");
+                for (int i = 0; i < middle.get(0).childNodeSize(); i++) {
+                    if (middle.get(0).child(i).child(0).text().equals("Position")) {
+                        buffer.append(middle.get(0).child(i).child(1).child(0).text() + ", ");
+                        posion = middle.get(0).child(i).child(1).child(0).text();
+                        break;
                     }
-                    buffer.append(lwf.get(0).child(0).child(1).text() + ", ");
-                    buffer.append(ss.get(0).child(1).child(1).text() + ", ");
-                    buffer.append(cf.get(0).child(2).child(1).text() + ", ");
-                    buffer.append(rwf.get(0).child(3).child(1).text() + ", ");
-                    buffer.append(lmf.get(1).child(0).child(1).text() + ", ");
-                    buffer.append(dmf.get(1).child(1).child(1).text() + ", ");
-                    buffer.append(cmf.get(1).child(2).child(1).text() + ", ");
-                    buffer.append(amf.get(1).child(3).child(1).text() + ", ");
-                    buffer.append(rmf.get(1).child(4).child(1).text() + ", ");
-                    buffer.append(lb.get(2).child(0).child(1).text() + ", ");
-                    buffer.append(cb.get(2).child(1).child(1).text() + ", ");
-                    buffer.append(rb.get(2).child(2).child(1).text() + ", ");
-                    buffer.append(gk.get(3).child(0).child(1).text() + ", ");
-
-                    buffer.append(playing_style.get(0).child(0).child(1).text() + ", ");
-                int size = player_skill.get(0).child(1).child(1).children().size();
-                for (int i = 0; i < size ;i++){
-                    buffer.append(player_skill.get(0).child(1).child(1).child(i).text() + ", ");
                 }
+                buffer.append(lwf.get(0).child(0).child(1).text() + ", ");
+                buffer.append(ss.get(0).child(1).child(1).text() + ", ");
+                buffer.append(cf.get(0).child(2).child(1).text() + ", ");
+                buffer.append(rwf.get(0).child(3).child(1).text() + ", ");
+                buffer.append(lmf.get(1).child(0).child(1).text() + ", ");
+                buffer.append(dmf.get(1).child(1).child(1).text() + ", ");
+                buffer.append(cmf.get(1).child(2).child(1).text() + ", ");
+                buffer.append(amf.get(1).child(3).child(1).text() + ", ");
+                buffer.append(rmf.get(1).child(4).child(1).text() + ", ");
+                buffer.append(lb.get(2).child(0).child(1).text() + ", ");
+                buffer.append(cb.get(2).child(1).child(1).text() + ", ");
+                buffer.append(rb.get(2).child(2).child(1).text() + ", ");
+                buffer.append(gk.get(3).child(0).child(1).text() + ", ");
+
+                if (posion.equals("LWF")){
+                    buffer.append(lwf.get(0).child(0).child(1).text() + ", ");
+                }
+                if (posion.equals("SS")){
+                    buffer.append(ss.get(0).child(1).child(1).text() + ", ");
+                }
+                if (posion.equals("CF")){
+                    buffer.append(cf.get(0).child(2).child(1).text() + ", ");
+                }
+                if (posion.equals("RWF")){
+                    buffer.append(rwf.get(0).child(3).child(1).text() + ", ");
+                }
+                if (posion.equals("LMF")){
+                    buffer.append(lmf.get(1).child(0).child(1).text() + ", ");
+                }
+                if (posion.equals("DMF")){
+                    buffer.append(dmf.get(1).child(1).child(1).text() + ", ");
+                }
+                if (posion.equals("CMF")){
+                    buffer.append(cmf.get(1).child(2).child(1).text() + ", ");
+                }
+                if (posion.equals("AMF")){
+                    buffer.append(amf.get(1).child(3).child(1).text() + ", ");
+                }
+                if (posion.equals("RMF")){
+                    buffer.append(rmf.get(1).child(4).child(1).text() + ", ");
+                }
+                if (posion.equals("LB")){
+                    buffer.append(lb.get(2).child(0).child(1).text() + ", ");
+                }
+                if (posion.equals("CB")){
+                    buffer.append(cb.get(2).child(1).child(1).text() + ", ");
+                }
+                if (posion.equals("RB")){
+                    buffer.append(rb.get(2).child(2).child(1).text() + ", ");
+                }
+                if (posion.equals("GK")){
+                    buffer.append(gk.get(3).child(0).child(1).text() + ", ");
+                }
+
+//                buffer.append(playing_style.get(0).child(0).child(1).text() + ", ");
+//                int size = player_skill.get(0).child(1).child(1).children().size();
+//                for (int i = 0; i < size ;i++){
+//                    buffer.append(player_skill.get(0).child(1).child(1).child(i).text() + ", ");
+//                }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -273,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
         public  void writefile(String text)
         {
             File externalStorageDir =  new File (Environment.getExternalStorageDirectory().getAbsolutePath()  + "/Download/eyedebug/" );
-            String fileName =  System.currentTimeMillis() + ".txt" ;
+            String fileName=  System.currentTimeMillis() + ".txt" ;
 
             boolean statement = externalStorageDir.exists() && externalStorageDir.isDirectory();
             if(!statement) {
@@ -307,20 +359,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    ArrayList<String> team_name = new ArrayList<>();
+    ArrayList<Integer> check_id = new ArrayList<>();
+    ArrayList<Integer> real_check_id = new ArrayList<>();
     public class Read extends AsyncTask<String, Void, ArrayList<String>> {
         ArrayList<String> list = new ArrayList<>();
         String data;
         String dataInvoke;
-        Elements player;
-        Document teamdata;
-        Elements sizeteam;
-        int gk;
-        int cb;
-        int mf;
-        int cf;
-        int size;
-        Elements team;
-        String datateam;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -329,31 +375,64 @@ public class MainActivity extends AppCompatActivity {
         protected ArrayList<String> doInBackground(String... params) {
 
             try {
-                Document league = Jsoup.connect("https://www.pesmaster.com/serie-bkt/efootball-2022/league/346/").get();
-//                Document document1 = Jsoup.connect("https://www.pesmaster.com/stade-rennais-fc/efootball-2022/team/218/").get();
-                for (int i = 0 ; i < 20 ; i ++){
-//                    for (int i = 0 ; i < 18 ; i ++){
-                     team = league.select("div.team-block > a");
-                     datateam = team.get(i).attr("href");
-                    teamdata = Jsoup.connect("https://www.pesmaster.com" + datateam).get();
-                    sizeteam = teamdata.select("div.main-container" );
-                     gk = sizeteam.get(0).child(7).child(0).child(0).childNodeSize() - 2;
-                     cb = sizeteam.get(0).child(9).child(0).child(0).childNodeSize() - 2;
-                     mf = sizeteam.get(0).child(11).child(0).child(0).childNodeSize() - 2;
-                     cf = sizeteam.get(0).child(13).child(0).child(0).childNodeSize() - 2;
-                     size = gk + cb + mf + cf;
-                    player = teamdata.select("figure.player-card.efootball-2022 > a");
+                Document document1 = Jsoup.connect("https://www.pesmaster.com/english-league/efootball-2022/league/113/").get();
+                Elements team_in_league = document1.select("div.team-block-container > div.team-block > a" );
+                for (Element data_name : team_in_league) {
+                    for (int i = 0; i < 1 ; i++) {
+                        String data = data_name.attr("href");
+                        team_name.add(data);
+                    }
+                }
+
+                for (int i = 0; i < team_name.size(); i++) {
+                    Document team_player = Jsoup.connect("https://www.pesmaster.com" + team_name.get(i)).get();
+                    Elements teamplayer_in_league = team_player.select("div.main-container");
+
+                    //Code for Pes 2022
+                    int gk = teamplayer_in_league.get(0).child(7).child(0).child(0).childNodeSize() - 2;
+                    int cb = teamplayer_in_league.get(0).child(9).child(0).child(0).childNodeSize() - 2;
+                    int mf = teamplayer_in_league.get(0).child(11).child(0).child(0).childNodeSize() - 2;
+                    int cf = teamplayer_in_league.get(0).child(13).child(0).child(0).childNodeSize() - 2;
+                    int size = gk + cb + mf + cf;
+                    Elements name = team_player.select("figure.player-card.efootball-2022 > a");
+
                     for (int j = 0; j < size; j++) {
-//                        for (int j = 0; j < size; j++) {
-                        data = player.get(j).attr("href");
+                        data = name.get(j).attr("href");
                         list.add(
                                 "https://www.pesmaster.com" + data
                         );
                         dataInvoke = "https://www.pesmaster.com" + data;
                     }
+
+                    //Code for Pes 2021
+//                    for (Element data_name_console : teamplayer_in_league) {
+//                        int num_of_player = data_name_console.child(3).child(1).child(0).child(1).childNodeSize();
+//                        int squad_size = (num_of_player - 1) / 2;
+//                        check_id.add(squad_size);
+//                        for (int j = 0; j < squad_size; j++) {
+//                            String data1 = data_name_console.child(3).child(1).child(0).child(1).child(j).child(0).child(1).attr("href");
+//                            list.add("https://www.pesmaster.com" + data1);
+//                        }
+//                    }
+
+                    //Code For Pes 2021 Mobile
+//                for (Element data_name_mobile : teamplayer_in_league) {
+//                    int num_of_player = data_name_mobile.child(4).child(1).child(0).child(1).childNodeSize();
+//                    int squad_size = (num_of_player - 1) / 2;
+//                    check_id.add(squad_size);
+//                    String data = data_name_mobile.child(4).child(1).child(0).child(1).child(0).child(0).child(1).attr("href");
+//                    for (int j = 0; j < squad_size; j++) {
+//                            String data1 = data_name_mobile.child(4).child(1).child(0).child(1).child(j).child(0).child(1).attr("href");
+//                            list.add("https://www.pesmaster.com" + data1);
+//                        }
+//                }
+
                 }
-
-
+//                real_check_id.add(check_id.get(0));
+//                for (int k=0; k< team_name.size()-1;k++){
+//                    real_check_id.add(real_check_id.get(k) + check_id.get(k+1));
+//                }
+//                dataInvoke = "https://www.pesmaster.com" + data;
                 }
                 catch (IOException e) {
                 e.printStackTrace();
